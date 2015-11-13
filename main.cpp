@@ -29,7 +29,7 @@ bool bufferVazio = true;
 int respostaFinal = 0;
 string stringBuscada;
 
-/* Debug imprime um log de atividades como criacao de
+/* Debug: imprime um log de atividades como criacao de
 threads, finalizacao e leitura de linhas */
 bool DEBUG = false;
 bool SLEEP = true;
@@ -41,8 +41,8 @@ int main(int argc, char const *argv[])
   int rc;
   int numeroDeThreads;
   pthread_t produtorT;
-  
-  //  String passada como argumento
+
+  // String passada como argumento
   stringBuscada = argv[2];
 
   // Número de threads concorrentes suportadas, baseada no número de cores
@@ -94,7 +94,7 @@ void *produtor(void *fileName)
   pthread_mutex_lock(&protegeDados);
   arq.open((char*)fileName);
   pthread_mutex_unlock(&protegeDados);
-  
+
   while (!arq.eof())
   {
 
@@ -113,8 +113,8 @@ void *produtor(void *fileName)
 
     // } while (aguardar == true);
 
-    // SEÇÃO CRÍTICA
 
+    /* Seção Crítica */
     pthread_mutex_lock(&protegeDados);
     while (bufferCheio)
     {
@@ -170,7 +170,7 @@ void *consumidor(void *i)
     // }
     // while (aguardar);
 
-    // SEÇÃO CRÍTICA
+    /* Seção Crítica */
     pthread_mutex_lock(&protegeDados);
     while (bufferVazio && linhasDoArquivo.size() > 0)
     {
